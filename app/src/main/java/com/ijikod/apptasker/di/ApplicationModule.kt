@@ -2,12 +2,12 @@ package com.ijikod.apptasker.di
 
 import android.content.Context
 import androidx.room.Room
-import com.ijikod.apptasker.data.persistance.AppTaskerDataBase
-import com.ijikod.apptasker.data.persistance.DATABASE_NAME
+import com.ijikod.apptasker.data.source.persistance.AppTaskerDataBase
+import com.ijikod.apptasker.data.source.persistance.DATABASE_NAME
 import com.ijikod.apptasker.data.repository.Repository
 import com.ijikod.apptasker.data.repository.TasksRepository
 import com.ijikod.apptasker.data.source.TaskDataSource
-import com.ijikod.apptasker.data.source.local.TasksLocalDataSource
+import com.ijikod.apptasker.data.source.persistance.TasksLocalDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

@@ -1,6 +1,6 @@
 package com.ijikod.apptasker.data.repository
 
-import com.ijikod.apptasker.data.source.local.TasksLocalDataSource
+import com.ijikod.apptasker.data.source.persistance.TasksLocalDataSource
 import com.ijikod.apptasker.di.ApplicationModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
