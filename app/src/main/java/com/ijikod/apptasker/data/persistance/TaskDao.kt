@@ -1,7 +1,7 @@
 package com.ijikod.apptasker.data.persistance
 
 import androidx.room.*
-import com.ijikod.apptasker.data.Models.Task
+import com.ijikod.apptasker.data.models.Task
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 

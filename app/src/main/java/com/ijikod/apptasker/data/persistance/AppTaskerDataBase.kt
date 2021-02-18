@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.ijikod.apptasker.data.Models.Task
+import com.ijikod.apptasker.data.models.Task
 
 /**
  * The Room database for this app
@@ -39,4 +39,4 @@ abstract class AppTaskerDataBase : RoomDatabase() {
 
 }
 
-const val DATABASE_NAME = "AppTasker"
+const val DATABASE_NAME = "AppTasker.db"

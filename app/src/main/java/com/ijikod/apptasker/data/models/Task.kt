@@ -1,4 +1,4 @@
-package com.ijikod.apptasker.data.Models
+package com.ijikod.apptasker.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
