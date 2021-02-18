@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 interface TaskDao {
 
     @Query("SELECT * FROM Tasks")
-    fun getTasks(): Flow<List<Task>>
+    abstract fun getTasks(): Flow<List<Task>>
 
     @Query("SELECT * FROM Tasks WHERE title LIKE :title ORDER BY title DESC ")
     fun findTaskByTile(title: String): Flow<List<Task>>
