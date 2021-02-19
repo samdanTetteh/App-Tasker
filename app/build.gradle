@@ -54,6 +54,8 @@ dependencies {
     // Androidx
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger:$daggerVersion"
@@ -63,6 +65,9 @@ dependencies {
     // Using Dagger in androidTest and Robolectric too
     kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
     kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
+
+    // Androidx Testing
+    androidTestImplementation "androidx.navigation:navigation-testing:$navigationVersion"
 
     testImplementation 'junit:junit:4.+'
     // Room Test helpers

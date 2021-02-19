@@ -3,4 +3,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="task_loading_error">Error loading tasks...</string>
+    <string name="add_task">Add task</string>
+    <string name="enter_title_txt">Enter Title</string>
+    <string name="enter_description_txt">Enter description</string>
+    <string name="cancel_txt">cancel</string>
 </resources>
