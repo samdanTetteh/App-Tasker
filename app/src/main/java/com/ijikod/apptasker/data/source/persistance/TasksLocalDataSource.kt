@@ -6,6 +6,8 @@ import com.ijikod.apptasker.data.source.TaskDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
+
 
 class TasksLocalDataSource(
     private val dao: TaskDao,
@@ -13,8 +15,12 @@ class TasksLocalDataSource(
 ) : TaskDataSource {
 
 
-    override fun getTasks(): Flow<Result<List<Task>>> = flow {
-        dao.getTasks()
+    override suspend fun getTasks(): Result<List<Task>> = withContext(ioDispatcher){
+       return@withContext try {
+           Result.Success(dao.getTasks())
+       }catch (e: Exception) {
+            Result.Error(e)
+       }
     }
 
 

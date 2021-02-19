@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TaskDataSource {
 
-    fun getTasks(): Flow<Result<List<Task>>>
+    suspend fun getTasks(): Result<List<Task>>
 
     suspend fun findTaskByTitle(title: String): Flow<Result<List<Task>>>
 

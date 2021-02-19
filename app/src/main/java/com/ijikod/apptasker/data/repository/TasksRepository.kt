@@ -8,6 +8,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 import javax.inject.Inject
 
 class TasksRepository @Inject constructor (
@@ -16,9 +18,20 @@ class TasksRepository @Inject constructor (
 ) : Repository {
 
 
-    @ExperimentalCoroutinesApi
-    override suspend fun getTasks(): Flow<Result<List<Task>>> {
-        return localTasks
+
+    override suspend fun getTasks(): Result<List<Task>> {
+
+        return withContext(ioDispatcher){
+
+            val tasks = getLocalTasks()
+            (tasks as? Result.Success)?.let { result ->
+                return@withContext  Result.Success(result.data)
+            }
+
+            return@withContext Result.Error(Exception("Illegal state"))
+        }
+
+
     }
 
 
@@ -26,10 +39,14 @@ class TasksRepository @Inject constructor (
         TODO("Not yet implemented")
     }
 
+    
+    suspend fun getLocalTasks(): Result<List<Task>>{
+        val localTasks = localDataSource.getTasks()
+        if (localTasks is Result.Success) return localTasks
 
-    @ExperimentalCoroutinesApi
-    private val localTasks : Flow<Result<List<Task>>> =
-        localDataSource.getTasks().flowOn(ioDispatcher).conflate()
+        //TODO: move error string to resource file
+        return Result.Error(Exception("Error Fetching data from database"))
+    }
 
 
 }

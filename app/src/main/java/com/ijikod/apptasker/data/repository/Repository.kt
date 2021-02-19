@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface Repository {
 
-    suspend fun getTasks(): Flow<Result<List<Task>>>
+    suspend fun getTasks(): Result<List<Task>>
 
     suspend fun saveTask(task: Task)
 

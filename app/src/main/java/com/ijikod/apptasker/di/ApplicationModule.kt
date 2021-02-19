@@ -41,7 +41,7 @@ object ApplicationModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideDataBae(context: Context): AppTaskerDataBase {
+    fun provideDataBase(context: Context): AppTaskerDataBase {
         return Room.databaseBuilder(
             context.applicationContext,
             AppTaskerDataBase::class.java,
