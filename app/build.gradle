@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -56,6 +57,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     // Dagger
     implementation "com.google.dagger:dagger:$daggerVersion"
@@ -68,6 +70,7 @@ dependencies {
 
     // Androidx Testing
     androidTestImplementation "androidx.navigation:navigation-testing:$navigationVersion"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 
     testImplementation 'junit:junit:4.+'
     // Room Test helpers

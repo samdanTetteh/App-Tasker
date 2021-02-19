@@ -12,6 +12,6 @@ data class Task(
         val color : String,
         val completed : Boolean,
         val icon : Int,
-        val createdDate: Date,
-        val completeDate: Date
+        val createdDate: String,
+        val completeDate: String
 )
