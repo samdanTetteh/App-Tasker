@@ -15,7 +15,7 @@ import javax.inject.Inject
  * ViewModel to task list Screen
  *
  */
-class ViewModel @Inject constructor (
+class TaskSharedViewModel @Inject constructor (
     private val tasksRepository: TasksRepository
 ): ViewModel() {
 

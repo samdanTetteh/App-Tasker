@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.ijikod.apptasker.data.source.persistance.AppTaskerDataBase
 import com.ijikod.apptasker.data.source.persistance.DATABASE_NAME
-import com.ijikod.apptasker.data.repository.Repository
+import com.ijikod.apptasker.data.repository.TaskRepository
 import com.ijikod.apptasker.data.repository.TasksRepository
 import com.ijikod.apptasker.data.source.TaskDataSource
 import com.ijikod.apptasker.data.source.persistance.TasksLocalDataSource
@@ -60,7 +60,7 @@ abstract class ApplicationModuleBinds {
 
     @Singleton
     @Binds
-    abstract fun bindRepository(repository: TasksRepository) : Repository
+    abstract fun bindRepository(repository: TasksRepository) : TaskRepository
 }
 
 

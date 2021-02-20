@@ -6,7 +6,6 @@ import com.ijikod.apptasker.data.source.persistance.TasksLocalDataSource
 import com.ijikod.apptasker.di.ApplicationModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import java.lang.Exception
@@ -15,7 +14,7 @@ import javax.inject.Inject
 class TasksRepository @Inject constructor (
     @ApplicationModule.LocalDataSource private val localDataSource: TasksLocalDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : Repository {
+) : TaskRepository {
 
 
 

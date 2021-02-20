@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
  * Interface to data layer
  *
  */
-interface Repository {
+interface TaskRepository {
 
     suspend fun getTasks(): Result<List<Task>>
 
