@@ -1,4 +1,4 @@
-package com.ijikod.apptasker.di
+package com.ijikod.apptasker.di.modules
 
 import android.content.Context
 import androidx.room.Room
@@ -16,14 +16,14 @@ import kotlinx.coroutines.Dispatchers
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
-@Module(includes = arrayOf(ApplicationModuleBinds::class))
+@Module(includes = [ApplicationModuleBinds::class])
 object ApplicationModule {
 
     @Qualifier
     @Retention(AnnotationRetention.RUNTIME)
     annotation class LocalDataSource
 
-    @JvmStatic
+
     @Singleton
     @LocalDataSource
     @Provides
@@ -37,8 +37,6 @@ object ApplicationModule {
         )
     }
 
-
-    @JvmStatic
     @Singleton
     @Provides
     fun provideDataBase(context: Context): AppTaskerDataBase {
@@ -49,7 +47,6 @@ object ApplicationModule {
         ).build()
     }
 
-    @JvmStatic
     @Singleton
     @Provides
     fun provideDispatcher() = Dispatchers.IO

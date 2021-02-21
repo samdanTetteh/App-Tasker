@@ -10,7 +10,7 @@ import com.ijikod.apptasker.data.models.Task
  * The Room database for this app
  *
  */
-@Database(entities = arrayOf(Task::class), version = 1)
+@Database(entities = arrayOf(Task::class), version = 1, exportSchema = false)
 abstract class AppTaskerDataBase : RoomDatabase() {
 
     abstract fun taskDao(): TaskDao

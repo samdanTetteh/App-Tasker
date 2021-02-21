@@ -7,11 +7,9 @@ import java.util.*
 @Entity(tableName = "Tasks")
 data class Task(
         @PrimaryKey
-        val id : Int,
-        val title : String,
-        val color : String,
-        val completed : Boolean,
-        val icon : Int,
-        val createdDate: String,
-        val completeDate: String
+        val id : String = UUID.randomUUID().toString(),
+        val title : String = "",
+        val description: String = "",
+        val completed : Boolean = false,
+        val createdDate: String = "",
 )

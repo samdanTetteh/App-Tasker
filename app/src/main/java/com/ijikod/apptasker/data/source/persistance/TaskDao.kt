@@ -16,6 +16,9 @@ interface TaskDao {
     @Query("SELECT * FROM Tasks")
     suspend fun getTasks(): List<Task>
 
+    @Query("SELECT * FROM TASKS WHERE id = :taskId")
+    suspend fun getTask(taskId: String): Task
+
     @Query("SELECT * FROM Tasks WHERE title LIKE :title ORDER BY title DESC ")
     suspend fun findTaskByTile(title: String): List<Task>
 
@@ -31,7 +34,7 @@ interface TaskDao {
     @Update
     suspend fun updateTask(task: Task): Int
 
-    @Query("DELETE from Tasks where id = :id")
+    @Query("DELETE FROM Tasks where id = :id")
     suspend fun deleteTaskById(id: Int): Int
 
     @Delete

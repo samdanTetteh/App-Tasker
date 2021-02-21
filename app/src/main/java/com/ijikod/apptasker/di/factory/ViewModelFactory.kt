@@ -1,4 +1,4 @@
-package com.ijikod.apptasker.domain.factory
+package com.ijikod.apptasker.di.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

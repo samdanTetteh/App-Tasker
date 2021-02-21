@@ -23,6 +23,14 @@ class TasksLocalDataSource(
        }
     }
 
+    override suspend fun getTask(taskId: String): Result<Task> = withContext(ioDispatcher) {
+        return@withContext try {
+            Result.Success(dao.getTask(taskId))
+        }catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
 
     override suspend fun findTaskByTitle(title: String): Flow<Result<List<Task>>> {
         TODO("Not yet implemented")

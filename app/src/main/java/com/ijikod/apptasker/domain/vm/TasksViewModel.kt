@@ -1,4 +1,4 @@
-package com.ijikod.apptasker.domain.tasksList
+package com.ijikod.apptasker.domain.vm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +15,7 @@ import javax.inject.Inject
  * ViewModel to task list Screen
  *
  */
-class TaskSharedViewModel @Inject constructor (
+class TasksViewModel @Inject constructor (
     private val tasksRepository: TasksRepository
 ): ViewModel() {
 

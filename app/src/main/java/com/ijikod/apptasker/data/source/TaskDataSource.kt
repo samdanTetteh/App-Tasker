@@ -9,6 +9,8 @@ interface TaskDataSource {
 
     suspend fun getTasks(): Result<List<Task>>
 
+    suspend fun getTask(taskId: String) : Result<Task>
+
     suspend fun findTaskByTitle(title: String): Flow<Result<List<Task>>>
 
     suspend fun saveTask(task: Task)

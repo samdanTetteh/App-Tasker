@@ -57,7 +57,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger:$daggerVersion"
@@ -70,7 +70,7 @@ dependencies {
 
     // Androidx Testing
     androidTestImplementation "androidx.navigation:navigation-testing:$navigationVersion"
-    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragmentVersion"
 
     testImplementation 'junit:junit:4.+'
     // Room Test helpers

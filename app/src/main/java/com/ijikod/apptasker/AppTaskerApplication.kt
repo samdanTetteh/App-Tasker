@@ -1,11 +1,12 @@
 package com.ijikod.apptasker
 
-import android.app.Application
+import com.ijikod.apptasker.di.DaggerApplicationComponent
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
 
-class AppTaskerApplication: Application() {
+open class AppTaskerApplication: DaggerApplication() {
 
-    override fun onCreate() {
-        super.onCreate()
-
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return  DaggerApplicationComponent.factory().create(applicationContext)
     }
 }

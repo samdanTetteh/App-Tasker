@@ -3,13 +3,13 @@ package com.ijikod.apptasker.data.repository
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
 import com.ijikod.apptasker.data.source.persistance.TasksLocalDataSource
-import com.ijikod.apptasker.di.ApplicationModule
+import com.ijikod.apptasker.di.modules.ApplicationModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 import javax.inject.Inject
+import kotlin.Exception
 
 class TasksRepository @Inject constructor (
     @ApplicationModule.LocalDataSource private val localDataSource: TasksLocalDataSource,
@@ -33,8 +33,19 @@ class TasksRepository @Inject constructor (
 
     }
 
+    override suspend fun getTask(taskId: String): Result<Task> {
+        return withContext(ioDispatcher) {
+            val task = getTask(taskId)
+            (task as? Result.Success)?.let { result ->
+                return@withContext Result.Success(result.data)
+            }
 
-    override suspend fun saveTask(task: Task) {
+            return@withContext Result.Error(Exception("Illegal State"))
+        }
+    }
+
+
+    override suspend fun createTask(task: Task) {
         TODO("Not yet implemented")
     }
 
