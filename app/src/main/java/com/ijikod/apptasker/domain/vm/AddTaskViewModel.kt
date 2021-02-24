@@ -6,19 +6,23 @@ import androidx.lifecycle.viewModelScope
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
 import com.ijikod.apptasker.data.repository.TaskRepository
-import com.ijikod.apptasker.data.repository.TasksRepository
+import com.ijikod.apptasker.domain.AddTaskInteractor
 import com.ijikod.apptasker.util.Extentions.toString
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 class AddTaskViewModel @Inject constructor(
-        private val taskRepository: TaskRepository
+        private val taskRepository: TaskRepository,
+        private val addTaskUseCase: AddTaskInteractor
 ) : ViewModel() {
 
     val title = MutableLiveData<String>()
 
     val description = MutableLiveData<String>()
+
+    val taskTitleErrors = addTaskUseCase.taskTitleErrorObservable
+    val taskDescriptionErrors = addTaskUseCase.taskDescriptionErrorObservable
 
     private val _errorMsg = MutableLiveData<String>()
     val errorMsg = _errorMsg
@@ -34,6 +38,17 @@ class AddTaskViewModel @Inject constructor(
     private var taskComplete = false
 
 
+    fun validateFields(){
+        title.value?.let { title ->
+            addTaskUseCase.taskTitleTaskValidation(title)
+        }
+
+        description.value?.let { description ->
+            addTaskUseCase.taskDescTaskValidation(description)
+        }
+    }
+
+
     fun load(taskId: String) {
         this.taskId = taskId
         this.taskId?.let {
@@ -47,8 +62,6 @@ class AddTaskViewModel @Inject constructor(
                 }
 
             }
-
-
         } ?: run {
             isNewTask = true
             return
