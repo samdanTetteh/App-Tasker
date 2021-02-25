@@ -7,7 +7,7 @@ import com.ijikod.apptasker.domain.AddTaskInteractor
 @BindingAdapter("app:titleErrorMsg")
 fun setErrorMsg(view: TextInputLayout, error: AddTaskInteractor.AddTaskErrors){
     when (error){
-        is AddTaskInteractor.AddTaskErrors.Empty -> view.error = error.value
-        is AddTaskInteractor.AddTaskErrors.Invalid -> view.error = error.value
+        is AddTaskInteractor.AddTaskErrors.Empty -> view.error = view.context.getString(error.value)
+        is AddTaskInteractor.AddTaskErrors.Invalid -> view.error = view.context.getString(error.value)
     }
 }

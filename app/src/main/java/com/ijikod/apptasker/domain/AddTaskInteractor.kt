@@ -1,6 +1,7 @@
 package com.ijikod.apptasker.domain
 
 import androidx.databinding.ObservableArrayList
+import com.ijikod.apptasker.R
 
 class AddTaskInteractor {
 
@@ -16,8 +17,8 @@ class AddTaskInteractor {
      */
     fun taskTitleTaskValidation(title: String) {
         when {
-            title.isEmpty() -> taskTitleErrorObservable.add(0, AddTaskErrors.Empty("Title cannot be empty"))
-            title.length < 5 -> taskTitleErrorObservable.add(0, AddTaskErrors.Invalid("Max 5"))
+            title.isEmpty() -> taskTitleErrorObservable.add(0, AddTaskErrors.Empty(R.string.empty_title_error))
+            title.length < 5 -> taskTitleErrorObservable.add(0, AddTaskErrors.Invalid(R.string.max_character_txt))
             else -> {
                 taskTitleErrorObservable.clear()
             }
@@ -31,8 +32,8 @@ class AddTaskInteractor {
      */
     fun taskDescTaskValidation(desc: String) {
         when {
-            desc.isEmpty() -> taskDescriptionErrorObservable.add(0, AddTaskErrors.Empty("Description cannot be empty"))
-            desc.length < 5 -> taskDescriptionErrorObservable.add(0, AddTaskErrors.Invalid("Must be more than 5 characters"))
+            desc.isEmpty() -> taskDescriptionErrorObservable.add(0, AddTaskErrors.Empty(R.string.description_empty_txt))
+            desc.length < 5 -> taskDescriptionErrorObservable.add(0, AddTaskErrors.Invalid(R.string.max_character_txt))
             else -> {
                 taskDescriptionErrorObservable.clear()
             }
@@ -41,7 +42,7 @@ class AddTaskInteractor {
 
 
     sealed class AddTaskErrors {
-        data class Invalid(val value: String) : AddTaskErrors()
-        data class Empty(val value: String) : AddTaskErrors()
+        data class Invalid(val value: Int) : AddTaskErrors()
+        data class Empty(val value: Int) : AddTaskErrors()
     }
 }

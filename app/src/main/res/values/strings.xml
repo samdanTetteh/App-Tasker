@@ -7,4 +7,7 @@
     <string name="enter_title_txt">Enter Title</string>
     <string name="enter_description_txt">Enter description</string>
     <string name="cancel_txt">cancel</string>
+    <string name="empty_title_error">Title cannot be empty</string>
+    <string name="description_empty_txt">Description cannot be empty</string>
+    <string name="max_character_txt">Must be more than 5 characters</string>
 </resources>
