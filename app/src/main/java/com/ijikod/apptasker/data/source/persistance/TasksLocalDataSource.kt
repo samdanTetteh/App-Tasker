@@ -40,6 +40,14 @@ class TasksLocalDataSource(
         dao.insertTask(task)
     }
 
+    override suspend fun update(task: Task): Result<Int> = withContext(ioDispatcher) {
+        return@withContext try{
+            Result.Success(dao.updateTask(task))
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
     override suspend fun getCompletedTasks(status: Boolean): Flow<Result<List<Task>>> {
         TODO("Not yet implemented")
     }

@@ -4,27 +4,27 @@ import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
 import com.ijikod.apptasker.data.source.persistance.TasksLocalDataSource
 import com.ijikod.apptasker.di.modules.ApplicationModule
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.Exception
 
-class TasksRepository @Inject constructor (
-    @ApplicationModule.LocalDataSource private val localDataSource: TasksLocalDataSource,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class TasksRepository @Inject constructor(
+        @ApplicationModule.LocalDataSource private val localDataSource: TasksLocalDataSource,
+        private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : TaskRepository {
-
 
 
     override suspend fun getTasks(): Result<List<Task>> {
 
-        return withContext(ioDispatcher){
+        return withContext(ioDispatcher) {
 
             val tasks = getLocalTasks()
             (tasks as? Result.Success)?.let { result ->
-                return@withContext  Result.Success(result.data)
+                return@withContext result
+            }
+
+            (tasks as? Result.Error)?.let { error ->
+                return@withContext error
             }
 
             return@withContext Result.Error(Exception("Illegal state"))
@@ -35,9 +35,13 @@ class TasksRepository @Inject constructor (
 
     override suspend fun getTask(taskId: String): Result<Task> {
         return withContext(ioDispatcher) {
-            val task = getTask(taskId)
+            val task = localDataSource.getTask(taskId)
             (task as? Result.Success)?.let { result ->
-                return@withContext Result.Success(result.data)
+                return@withContext result
+            }
+
+            (task as? Result.Error)?.let { error ->
+                return@withContext error
             }
 
             return@withContext Result.Error(Exception("Illegal State"))
@@ -46,11 +50,28 @@ class TasksRepository @Inject constructor (
 
 
     override suspend fun createTask(task: Task) {
-        TODO("Not yet implemented")
+        coroutineScope {
+            launch { return@launch localDataSource.saveTask(task) }
+        }
     }
 
-    
-    suspend fun getLocalTasks(): Result<List<Task>>{
+    override suspend fun updateTask(task: Task): Result<Int> {
+        return withContext(ioDispatcher) {
+            val status = localDataSource.update(task)
+            (status as? Result.Success)?.let { result ->
+                return@withContext result
+            }
+
+            (status as? Result.Error)?.let { error ->
+                return@withContext error
+            }
+
+            return@withContext Result.Error(Exception("Illegal State"))
+        }
+    }
+
+
+    private suspend fun getLocalTasks(): Result<List<Task>> {
         val localTasks = localDataSource.getTasks()
         if (localTasks is Result.Success) return localTasks
 

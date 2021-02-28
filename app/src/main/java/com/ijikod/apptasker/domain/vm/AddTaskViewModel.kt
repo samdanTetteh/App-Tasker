@@ -31,14 +31,14 @@ class AddTaskViewModel @Inject constructor(
     val taskUpdated = _taskUpdated
 
 
-    private var taskId: String? = null
+    private lateinit var task: Task
 
     private var isNewTask: Boolean = false
 
     private var taskComplete = false
 
 
-    fun validateFields(){
+    fun validateFields() {
         title.value?.let { title ->
             addTaskUseCase.taskTitleTaskValidation(title)
         }
@@ -49,25 +49,27 @@ class AddTaskViewModel @Inject constructor(
     }
 
 
-    fun load(taskId: String) {
-        this.taskId = taskId
-        this.taskId?.let {
-            isNewTask = false
+    fun load(task: Task) {
+        this.task = task
+        // TODO: see if this implementation can be improved
+        when {
+            this.task.title.isEmpty() -> {
+                isNewTask = true
+                onTaskLoaded(this.task)
+            }
 
-            viewModelScope.launch {
-                taskRepository.getTask(taskId).let { result ->
-                    if (result is Result.Success) {
-                        onTaskLoaded(result.data)
+            this.task.title.isNotEmpty() -> {
+                isNewTask = false
+
+                viewModelScope.launch {
+                    taskRepository.getTask(this@AddTaskViewModel.task.id).let { result ->
+                        if (result is Result.Success) {
+                            onTaskLoaded(result.data)
+                        }
                     }
                 }
-
             }
-        } ?: run {
-            isNewTask = true
-            return
-
         }
-
     }
 
 
@@ -81,8 +83,8 @@ class AddTaskViewModel @Inject constructor(
         val currentTitle = title.value!!
         val currentDesc = description.value!!
 
-        if (isNewTask) {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            if (isNewTask) {
                 taskRepository.createTask(
                         Task(
                                 title = currentTitle,
@@ -90,6 +92,18 @@ class AddTaskViewModel @Inject constructor(
                                 createdDate = getCurrentDate()
                         )
                 )
+            } else {
+                taskRepository.updateTask(
+                        this@AddTaskViewModel.task.copy(
+                                description = currentDesc,
+                                title = currentTitle
+                        )
+                )
+            }
+        }
+        if (isNewTask) {
+            viewModelScope.launch {
+
             }
         }
     }

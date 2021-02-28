@@ -11,10 +11,12 @@ import kotlinx.coroutines.flow.Flow
  */
 interface TaskRepository {
 
-    suspend fun getTasks(): Result<List<Task>>
+    suspend fun getTasks(): Result<Any>
 
     suspend fun getTask(taskId: String): Result<Task>
 
     suspend fun createTask(task: Task)
+
+    suspend fun updateTask(task: Task): Result<Int>
 
 }

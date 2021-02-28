@@ -29,7 +29,7 @@ interface TaskDao {
     suspend fun getUnCompletedTask(status: Boolean): List<Task>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTask(task: Task)
+    suspend fun insertTask(task: Task): Int
 
     @Update
     suspend fun updateTask(task: Task): Int

@@ -15,6 +15,8 @@ interface TaskDataSource {
 
     suspend fun saveTask(task: Task)
 
+    suspend fun update(task: Task): Result<Int>
+
     suspend fun getCompletedTasks(status: Boolean): Flow<Result<List<Task>>>
 
     suspend fun getUnCompletedTasks(status: Boolean): Flow<Result<List<Task>>>
