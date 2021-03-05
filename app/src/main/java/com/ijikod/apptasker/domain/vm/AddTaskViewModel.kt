@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
-import com.ijikod.apptasker.data.repository.TaskRepository
+import com.ijikod.apptasker.data.repository.TasksRepository
 import com.ijikod.apptasker.domain.AddTaskInteractor
 import com.ijikod.apptasker.util.Extentions.toString
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ import java.util.*
 import javax.inject.Inject
 
 class AddTaskViewModel @Inject constructor(
-        private val taskRepository: TaskRepository,
+        private val taskRepository: TasksRepository,
         private val addTaskUseCase: AddTaskInteractor
 ) : ViewModel() {
 
@@ -29,6 +29,9 @@ class AddTaskViewModel @Inject constructor(
 
     private val _taskUpdated = MutableLiveData<Boolean>()
     val taskUpdated = _taskUpdated
+
+    private val _result = MutableLiveData<Result<*>>()
+    val result = _result
 
 
     private lateinit var task: Task
@@ -79,13 +82,13 @@ class AddTaskViewModel @Inject constructor(
         taskComplete = task.completed
     }
 
-    private fun saveTask() {
+     fun saveTask() {
         val currentTitle = title.value!!
         val currentDesc = description.value!!
 
         viewModelScope.launch {
             if (isNewTask) {
-                taskRepository.createTask(
+               _result.value = taskRepository.createTask(
                         Task(
                                 title = currentTitle,
                                 description = currentDesc,
@@ -93,17 +96,12 @@ class AddTaskViewModel @Inject constructor(
                         )
                 )
             } else {
-                taskRepository.updateTask(
+               _result.value = taskRepository.updateTask(
                         this@AddTaskViewModel.task.copy(
                                 description = currentDesc,
                                 title = currentTitle
                         )
                 )
-            }
-        }
-        if (isNewTask) {
-            viewModelScope.launch {
-
             }
         }
     }

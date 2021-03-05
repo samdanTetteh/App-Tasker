@@ -13,7 +13,7 @@ interface TaskDataSource {
 
     suspend fun findTaskByTitle(title: String): Flow<Result<List<Task>>>
 
-    suspend fun saveTask(task: Task)
+    suspend fun saveTask(task: Task) : Result<Int>
 
     suspend fun update(task: Task): Result<Int>
 
