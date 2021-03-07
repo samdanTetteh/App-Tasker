@@ -2,6 +2,8 @@ package com.ijikod.apptasker.domain
 
 import androidx.databinding.ObservableArrayList
 import com.ijikod.apptasker.R
+import com.ijikod.apptasker.util.Extentions.toString
+import java.util.*
 
 class AddTaskInteractor {
 
@@ -38,6 +40,15 @@ class AddTaskInteractor {
                 taskDescriptionErrorObservable.clear()
             }
         }
+    }
+
+
+    /**
+     * Get current system date
+     */
+     fun getCurrentDate(): String {
+        val currentDate = Calendar.getInstance().time
+        return currentDate.toString("yyyy/MM/dd HH:mm:ss")
     }
 
 

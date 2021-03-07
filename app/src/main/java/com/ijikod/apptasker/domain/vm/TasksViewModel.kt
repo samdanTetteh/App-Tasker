@@ -1,9 +1,6 @@
 package com.ijikod.apptasker.domain.vm
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
@@ -28,6 +25,17 @@ class TasksViewModel @Inject constructor (
     private val _errorMsg = MutableLiveData<Int>()
     val errorMsg: LiveData<Int> = _errorMsg
 
+    val empty = Transformations.map(_taskItems) {
+        it.isEmpty()
+    }
+
+
+    private val _newTaskEvent = MutableLiveData<Unit>()
+    val newTaskEvent: LiveData<Unit> = _newTaskEvent
+
+    private val _addTaskEvent = MutableLiveData<String>()
+    val addTaskData: LiveData<String> = _addTaskEvent
+
 
 
     init {
@@ -40,13 +48,12 @@ class TasksViewModel @Inject constructor (
         _dataLoading.value = true
 
         viewModelScope.launch {
-            val tasksResult = tasksRepository.getLocalTasks()
+            val tasksResult = tasksRepository.getTasks()
 
             if (tasksResult is Result.Success){
                 val tasks = tasksResult.data
                 _taskItems.value = tasks
 
-                _dataLoading.value = false
             }else {
                 _taskItems.value = emptyList()
                 _errorMsg.value = R.string.task_loading_error
@@ -54,5 +61,14 @@ class TasksViewModel @Inject constructor (
 
             _dataLoading.value = false
         }
+    }
+
+    fun newTask(){
+        _newTaskEvent.value = Unit
+    }
+
+
+    fun addTask(taskId: String){
+        _addTaskEvent.value = taskId
     }
 }

@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_title_txt"
-                app:setErrorMsg='@{vm.taskTitleErrors.get(0)}'
+                app:titleErrorMsg='@{vm.taskTitleErrors.get(0)}'
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="@string/enter_description_txt"
-                app:setErrorMsg='@{vm.taskDescriptionErrors.get(0)}'
+                app:titleErrorMsg='@{vm.taskDescriptionErrors.get(0)}'
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText

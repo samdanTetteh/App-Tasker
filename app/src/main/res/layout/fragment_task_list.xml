@@ -1,23 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.fragments.MainFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/taskListView"
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="vm"
+            type="com.ijikod.apptasker.domain.vm.TasksViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        tools:context=".presentation.fragments.MainFragment">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:src="@drawable/ic_add_white"
-        android:layout_gravity="end|bottom"
-        android:layout_width="wrap_content"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/add_task"
-        android:layout_height="wrap_content"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/taskListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                items="@{vm.tasks}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_task_txt"
+                android:visibility="@{vm.empty ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@+id/taskListView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/taskListView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom|right"
+            android:layout_margin="16dp"
+            app:fabSize="normal"
+            android:onClick="@{() -> vm.newTask()}"
+            android:contentDescription="@string/add_task"
+            android:src="@drawable/ic_add_white" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

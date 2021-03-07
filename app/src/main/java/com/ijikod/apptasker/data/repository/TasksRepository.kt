@@ -49,19 +49,9 @@ class TasksRepository @Inject constructor(
     }
 
 
-    override suspend fun createTask(task: Task): Result<Int> {
-        return withContext(ioDispatcher) {
-            val status = localDataSource.saveTask(task)
-            (status as? Result.Success)?.let { result ->
-                return@withContext result
-            }
-
-            (status as? Result.Error)?.let { error ->
-                return@withContext error
-            }
-
-            //TODO: move error string to resource file
-            return@withContext Result.Error(Exception("Illegal State"))
+    override suspend fun createTask(task: Task) {
+        coroutineScope {
+            localDataSource.saveTask(task)
         }
     }
 

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_addTaskFragment"
             app:destination="@id/addTaskFragment" />
+        <argument
+            android:name="taskId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/addTaskFragment"

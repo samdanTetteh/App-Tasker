@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="task"
+            type="com.ijikod.apptasker.data.models.Task" />
+
+
+        <variable
+            name="vm"
+            type="com.ijikod.apptasker.domain.vm.TasksViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> vm.addTask(task.id)}">
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            tools:text="Task to complete"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintBottom_toBottomOf="@+id/radioButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@{task.title}"
+            app:layout_constraintStart_toEndOf="@+id/radioButton"
+            app:layout_constraintTop_toTopOf="@+id/radioButton" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

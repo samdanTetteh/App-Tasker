@@ -36,13 +36,8 @@ class TasksLocalDataSource(
         TODO("Not yet implemented")
     }
 
-    override suspend fun saveTask(task: Task) : Result<Int> = withContext(ioDispatcher) {
-        return@withContext try {
-            Result.Success(dao.insertTask(task))
-        }catch (e: Exception){
-            Result.Error(e)
-        }
-
+    override suspend fun saveTask(task: Task) = withContext(ioDispatcher) {
+        dao.insertTask(task)
     }
 
     override suspend fun update(task: Task): Result<Int> = withContext(ioDispatcher) {

@@ -12,4 +12,5 @@
     <string name="max_character_txt">Must be more than 5 characters</string>
     <string name="task_saved_txt">Task Saved</string>
     <string name="oops_error_txt">Oops error happened while saving task</string>
+    <string name="empty_task_txt">Nothing to see here, click + to add task</string>
 </resources>

@@ -9,6 +9,7 @@ import com.ijikod.apptasker.data.repository.TasksRepository
 import com.ijikod.apptasker.domain.AddTaskInteractor
 import com.ijikod.apptasker.util.Extentions.toString
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
@@ -30,7 +31,7 @@ class AddTaskViewModel @Inject constructor(
     private val _taskUpdated = MutableLiveData<Boolean>()
     val taskUpdated = _taskUpdated
 
-    private val _result = MutableLiveData<Result<*>>()
+    private val _result = MutableLiveData<Result<Task>>()
     val result = _result
 
 
@@ -87,29 +88,28 @@ class AddTaskViewModel @Inject constructor(
         val currentDesc = description.value!!
 
         viewModelScope.launch {
-            if (isNewTask) {
-               _result.value = taskRepository.createTask(
-                        Task(
-                                title = currentTitle,
-                                description = currentDesc,
-                                createdDate = getCurrentDate()
-                        )
-                )
-            } else {
-               _result.value = taskRepository.updateTask(
-                        this@AddTaskViewModel.task.copy(
-                                description = currentDesc,
-                                title = currentTitle
-                        )
-                )
+            try {
+                if (isNewTask) {
+                    val newTask  = Task(
+                        title = currentTitle,
+                        description = currentDesc,
+                        createdDate = addTaskUseCase.getCurrentDate()
+                    )
+                    taskRepository.createTask(newTask)
+                    _result.value = Result.Success(newTask)
+                } else {
+                    val existingTask = task.copy(
+                        description = currentDesc,
+                        title = currentTitle
+                    )
+                    taskRepository.updateTask(existingTask)
+                    _result.value = Result.Success(existingTask)
+                }
+            }catch (e: Exception) {
+                _errorMsg.value = e.message
             }
         }
     }
 
-
-    private fun getCurrentDate(): String {
-        val currentDate = Calendar.getInstance().time
-        return currentDate.toString("yyyy/MM/dd HH:mm:ss")
-    }
 
 }
