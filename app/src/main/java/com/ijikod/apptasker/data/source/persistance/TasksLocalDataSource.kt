@@ -40,6 +40,10 @@ class TasksLocalDataSource(
         dao.insertTask(task)
     }
 
+    override suspend fun deleteTask(taskId: String) = withContext<Unit>(ioDispatcher) {
+        dao.deleteTaskById(taskId)
+    }
+
     override suspend fun update(task: Task): Result<Int> = withContext(ioDispatcher) {
         return@withContext try{
             Result.Success(dao.updateTask(task))

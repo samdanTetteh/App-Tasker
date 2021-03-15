@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.databinding.FragmentTaskListBinding
 import com.ijikod.apptasker.domain.vm.TasksViewModel
+import com.ijikod.apptasker.presentation.ItemTouchCallback
 import com.ijikod.apptasker.presentation.TaskAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_task_list.*
@@ -86,7 +87,17 @@ class TaskListFragment : DaggerFragment(R.layout.fragment_task_list) {
         val viewModel = binding.vm
         viewModel?.let { viewModel ->
             listAdapter = TaskAdapter(viewModel)
+            val swipeToDeleteCallback = object : ItemTouchCallback() {
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val pos = viewHolder.adapterPosition
+                    listAdapter.currentList.removeAt(pos)
+                    viewModel.deleteTask(listAdapter.currentList.get(pos).id)
+                    listAdapter.notifyItemRemoved(pos)
+                }
+            }
             binding.taskListView.adapter = listAdapter
+            val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+            itemTouchHelper.attachToRecyclerView(binding.taskListView)
         } ?: run {
             println("ViewModel on initialized when attempting to create list Adapter")
         }

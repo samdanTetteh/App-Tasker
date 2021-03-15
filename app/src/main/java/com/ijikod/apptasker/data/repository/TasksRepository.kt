@@ -55,6 +55,12 @@ class TasksRepository @Inject constructor(
         }
     }
 
+    override suspend fun deleteTask(taskId: String) {
+        coroutineScope {
+            localDataSource.deleteTask(taskId)
+        }
+    }
+
     override suspend fun updateTask(task: Task): Result<Int> {
         return withContext(ioDispatcher) {
             val status = localDataSource.update(task)

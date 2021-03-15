@@ -35,7 +35,7 @@ interface TaskDao {
     suspend fun updateTask(task: Task): Int
 
     @Query("DELETE FROM Tasks where id = :id")
-    suspend fun deleteTaskById(id: Int): Int
+    suspend fun deleteTaskById(id: String): Int
 
     @Delete
     fun deleteTask(vararg task: Task)
