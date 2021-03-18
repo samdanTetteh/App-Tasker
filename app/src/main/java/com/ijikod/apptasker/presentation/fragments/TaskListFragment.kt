@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,16 +16,15 @@ import com.ijikod.apptasker.databinding.FragmentTaskListBinding
 import com.ijikod.apptasker.domain.vm.TasksViewModel
 import com.ijikod.apptasker.presentation.ItemTouchCallback
 import com.ijikod.apptasker.presentation.TaskAdapter
-import dagger.android.support.DaggerFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_task_list.*
-import javax.inject.Inject
 
-class TaskListFragment : DaggerFragment(R.layout.fragment_task_list) {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+@AndroidEntryPoint
+class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
-    private val viewModel by viewModels<TasksViewModel> { viewModelFactory }
+
+    private val viewModel by viewModels<TasksViewModel>()
 
     lateinit var binding: FragmentTaskListBinding
 
@@ -50,7 +50,7 @@ class TaskListFragment : DaggerFragment(R.layout.fragment_task_list) {
         binding.lifecycleOwner = this.viewLifecycleOwner
         setUpListAdapter()
         setUpNavigation()
-//        setUpFab()
+        setUpFab()
     }
 
     private fun setUpFab(){

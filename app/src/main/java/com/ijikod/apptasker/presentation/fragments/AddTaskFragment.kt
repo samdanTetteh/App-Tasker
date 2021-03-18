@@ -3,30 +3,27 @@ package com.ijikod.apptasker.presentation.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.databinding.FragmentAddTaskBinding
 import com.ijikod.apptasker.domain.vm.AddTaskViewModel
-import dagger.android.support.DaggerFragment
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Main UI to Add task screen. Users can add task title and description
  *
  */
-class AddTaskFragment : DaggerFragment(R.layout.fragment_add_task) {
+@AndroidEntryPoint
+class AddTaskFragment : Fragment(R.layout.fragment_add_task) {
 
     private lateinit var viewDataBinding: FragmentAddTaskBinding
 
-
-    @Inject
-    lateinit var viewModelFactory:
-    ViewModelProvider.Factory
-    private val viewModel by viewModels<AddTaskViewModel> { viewModelFactory }
+    private val viewModel by viewModels<AddTaskViewModel> ()
 
 
     override fun onCreateView(

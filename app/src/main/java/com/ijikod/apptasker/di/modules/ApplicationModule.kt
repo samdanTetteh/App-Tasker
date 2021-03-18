@@ -1,22 +1,27 @@
 package com.ijikod.apptasker.di.modules
 
+
 import android.content.Context
 import androidx.room.Room
-import com.ijikod.apptasker.data.source.persistance.AppTaskerDataBase
-import com.ijikod.apptasker.data.source.persistance.DATABASE_NAME
 import com.ijikod.apptasker.data.repository.TaskRepository
 import com.ijikod.apptasker.data.repository.TasksRepository
 import com.ijikod.apptasker.data.source.TaskDataSource
+import com.ijikod.apptasker.data.source.persistance.AppTaskerDataBase
+import com.ijikod.apptasker.data.source.persistance.DATABASE_NAME
 import com.ijikod.apptasker.data.source.persistance.TasksLocalDataSource
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
-@Module(includes = [ApplicationModuleBinds::class])
+
+@Module
+@InstallIn(ApplicationComponent::class)
 object ApplicationModule {
 
     @Qualifier
@@ -39,7 +44,7 @@ object ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideDataBase(context: Context): AppTaskerDataBase {
+    fun provideDataBase(@ApplicationContext context: Context): AppTaskerDataBase {
         return Room.databaseBuilder(
             context.applicationContext,
             AppTaskerDataBase::class.java,
@@ -52,12 +57,24 @@ object ApplicationModule {
     fun provideDispatcher() = Dispatchers.IO
 }
 
+
 @Module
-abstract class ApplicationModuleBinds {
+@InstallIn(ApplicationComponent::class)
+object TasksRepositoryModule {
 
     @Singleton
-    @Binds
-    abstract fun bindRepository(repository: TasksRepository) : TaskRepository
+    @Provides
+    fun providesTasksRepository(
+        @ApplicationModule.LocalDataSource localTaskDataSource: TaskDataSource,
+        ioDispatcher: CoroutineDispatcher
+    ): TaskRepository {
+        return TasksRepository(
+            localTaskDataSource,
+            ioDispatcher
+        )
+    }
 }
+
+
 
 

@@ -1,20 +1,20 @@
 package com.ijikod.apptasker.domain.vm
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
-import com.ijikod.apptasker.data.repository.TasksRepository
+import com.ijikod.apptasker.data.repository.TaskRepository
 import com.ijikod.apptasker.domain.AddTaskInteractor
-import com.ijikod.apptasker.util.Extentions.toString
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
-import javax.inject.Inject
 
-class AddTaskViewModel @Inject constructor(
-        private val taskRepository: TasksRepository,
+class AddTaskViewModel @ViewModelInject constructor(
+        private val taskRepository: TaskRepository,
         private val addTaskUseCase: AddTaskInteractor
 ) : ViewModel() {
 

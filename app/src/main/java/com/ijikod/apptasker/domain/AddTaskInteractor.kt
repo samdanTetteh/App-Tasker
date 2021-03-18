@@ -4,8 +4,9 @@ import androidx.databinding.ObservableArrayList
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.util.Extentions.toString
 import java.util.*
+import javax.inject.Inject
 
-class AddTaskInteractor {
+class AddTaskInteractor @Inject constructor() {
 
 
     //todo: find a much suitable table type

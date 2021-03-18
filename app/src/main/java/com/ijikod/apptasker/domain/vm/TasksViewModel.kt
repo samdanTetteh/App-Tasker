@@ -1,5 +1,6 @@
 package com.ijikod.apptasker.domain.vm
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.data.Result
@@ -12,7 +13,7 @@ import javax.inject.Inject
  * ViewModel to task list Screen
  *
  */
-class TasksViewModel @Inject constructor (
+class TasksViewModel @ViewModelInject constructor (
     private val tasksRepository: TasksRepository
 ): ViewModel() {
 
