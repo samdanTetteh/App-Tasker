@@ -1,6 +1,8 @@
 package com.ijikod.apptasker.domain
 
+
 import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableField
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.util.Extentions.toString
 import java.util.*
@@ -10,7 +12,7 @@ class AddTaskInteractor @Inject constructor() {
 
 
     //todo: find a much suitable table type
-    val taskTitleErrorObservable = ObservableArrayList<AddTaskErrors>()
+    val taskTitleErrorObservable = ObservableField<AddTaskErrors>()
     val taskDescriptionErrorObservable = ObservableArrayList<AddTaskErrors>()
 
 
@@ -18,12 +20,12 @@ class AddTaskInteractor @Inject constructor() {
      * Task title validation
      * @param title as task description
      */
-    fun taskTitleTaskValidation(title: String) {
-        when {
-            title.isEmpty() -> taskTitleErrorObservable.add(0, AddTaskErrors.Empty(R.string.empty_title_error))
-            title.length < 5 -> taskTitleErrorObservable.add(0, AddTaskErrors.Invalid(R.string.max_character_txt))
+    fun taskTextValidation(title: String) : Int {
+        return when {
+            title.isEmpty() -> R.string.empty_title_error
+            title.length < 5 -> R.string.max_character_txt
             else -> {
-                taskTitleErrorObservable.clear()
+                0
             }
         }
     }
@@ -56,5 +58,6 @@ class AddTaskInteractor @Inject constructor() {
     sealed class AddTaskErrors {
         data class Invalid(val value: Int) : AddTaskErrors()
         data class Empty(val value: Int) : AddTaskErrors()
+        object Valid: AddTaskErrors()
     }
 }

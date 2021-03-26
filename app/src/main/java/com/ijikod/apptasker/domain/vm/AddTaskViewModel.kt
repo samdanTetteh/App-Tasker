@@ -1,32 +1,31 @@
 package com.ijikod.apptasker.domain.vm
 
-import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ijikod.apptasker.R
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
 import com.ijikod.apptasker.data.repository.TaskRepository
 import com.ijikod.apptasker.domain.AddTaskInteractor
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import java.util.*
 
 class AddTaskViewModel @ViewModelInject constructor(
-        private val taskRepository: TaskRepository,
-        private val addTaskUseCase: AddTaskInteractor
+    private val taskRepository: TaskRepository,
+    private val addTaskUseCase: AddTaskInteractor
 ) : ViewModel() {
 
     val title = MutableLiveData<String>()
 
     val description = MutableLiveData<String>()
 
-    val taskTitleErrors = addTaskUseCase.taskTitleErrorObservable
     val taskDescriptionErrors = addTaskUseCase.taskDescriptionErrorObservable
 
-    private val _errorMsg = MutableLiveData<String>()
-    val errorMsg = _errorMsg
+    private val _errorMsg = MutableLiveData<Int>()
+    val errorMsg: LiveData<Int> = _errorMsg
 
     private val _taskUpdated = MutableLiveData<Boolean>()
     val taskUpdated = _taskUpdated
@@ -35,44 +34,30 @@ class AddTaskViewModel @ViewModelInject constructor(
     val result = _result
 
 
-    private lateinit var task: Task
+    private var taskId: String? = null
 
     private var isNewTask: Boolean = false
 
     private var taskComplete = false
 
 
-    fun validateFields() {
-        title.value?.let { title ->
-            addTaskUseCase.taskTitleTaskValidation(title)
-        }
-
-        description.value?.let { description ->
-            addTaskUseCase.taskDescTaskValidation(description)
-        }
-    }
-
-
-    fun load(task: Task) {
-        this.task = task
+    fun load(taskId: String?) {
+        this.taskId = taskId
         // TODO: see if this implementation can be improved
-        when {
-            this.task.title.isEmpty() -> {
-                isNewTask = true
-                onTaskLoaded(this.task)
-            }
 
-            this.task.title.isNotEmpty() -> {
-                isNewTask = false
+        this.taskId?.let {
+            isNewTask = false
 
-                viewModelScope.launch {
-                    taskRepository.getTask(this@AddTaskViewModel.task.id).let { result ->
-                        if (result is Result.Success) {
-                            onTaskLoaded(result.data)
-                        }
+            viewModelScope.launch {
+                taskRepository.getTask(this@AddTaskViewModel.taskId!!).let { result ->
+                    if (result is Result.Success) {
+                        onTaskLoaded(result.data)
                     }
                 }
             }
+
+        } ?: run {
+            isNewTask = true
         }
     }
 
@@ -83,32 +68,37 @@ class AddTaskViewModel @ViewModelInject constructor(
         taskComplete = task.completed
     }
 
-     fun saveTask() {
-        val currentTitle = title.value!!
-        val currentDesc = description.value!!
+    fun saveTask() {
+        val currentTitle = title.value
+        val currentDesc = description.value
+
+        if (currentTitle.isNullOrEmpty() || currentDesc.isNullOrEmpty()) {
+            _errorMsg.value = R.string.empty_fields_txt
+            return
+        }
+
 
         viewModelScope.launch {
-            try {
-                if (isNewTask) {
-                    val newTask  = Task(
-                        title = currentTitle,
-                        description = currentDesc,
-                        createdDate = addTaskUseCase.getCurrentDate()
-                    )
-                    taskRepository.createTask(newTask)
-                    _result.value = Result.Success(newTask)
-                } else {
-                    val existingTask = task.copy(
-                        description = currentDesc,
-                        title = currentTitle
-                    )
-                    taskRepository.updateTask(existingTask)
-                    _result.value = Result.Success(existingTask)
-                }
-            }catch (e: Exception) {
-                _errorMsg.value = e.message
+            if (isNewTask) {
+                val newTask = Task(
+                    title = currentTitle,
+                    description = currentDesc,
+                    createdDate = addTaskUseCase.getCurrentDate()
+                )
+                taskRepository.createTask(newTask)
+                _result.value = Result.Success(newTask)
+            } else {
+                val existingTask = Task(
+                    id = taskId!!,
+                    description = currentDesc,
+                    title = currentTitle
+                )
+                taskRepository.updateTask(existingTask)
+                _result.value = Result.Success(existingTask)
             }
         }
+
+
     }
 
 

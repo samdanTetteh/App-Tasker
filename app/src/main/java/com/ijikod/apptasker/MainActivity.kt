@@ -3,8 +3,11 @@ package com.ijikod.apptasker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,35 +24,15 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private var menuLayout: Int? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolBar)
 
         // setup tool bar with navigation component
-        toolBar.setupWithNavController(navHostFragment.navController, appBarConfiguration)
+        setupActionBarWithNavController(navHostFragment.navController, appBarConfiguration)
+        toolBar.setupWithNavController(navHostFragment.navController)
     }
 
-
-    override fun onResume() {
-        super.onResume()
-
-        // Change menu items in action bar based on navigation destination
-        navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
-            menuLayout = when(destination.id){
-                R.id.addTaskFragment -> R.menu.save_task_menu
-                else -> null
-            }
-            invalidateOptionsMenu()
-        }
-
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        this.menuLayout?.let { menuInflater.inflate(it, menu) }
-        return true
-    }
 }

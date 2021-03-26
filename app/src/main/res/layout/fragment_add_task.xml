@@ -10,10 +10,10 @@
             type="com.ijikod.apptasker.domain.vm.AddTaskViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".presentation.fragments.AddTaskFragment">
+        android:layout_height="match_parent">
 
 
         <LinearLayout
@@ -27,13 +27,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_title_txt"
-                app:titleErrorMsg='@{vm.taskTitleErrors.get(0)}'
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.title}"/>
+                    android:text="@={vm.title}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -41,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="@string/enter_description_txt"
-                app:titleErrorMsg='@{vm.taskDescriptionErrors.get(0)}'
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -49,23 +47,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
                     android:inputType="textMultiLine|textCapCharacters"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:text="@={vm.description}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/cancelBtn"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:textAllCaps="false"
-                android:text="@string/cancel_txt" />
-
         </LinearLayout>
-
-
-    </ScrollView>
-
-
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

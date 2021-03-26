@@ -6,12 +6,19 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.databinding.FragmentAddTaskBinding
 import com.ijikod.apptasker.domain.vm.AddTaskViewModel
+import com.ijikod.apptasker.util.Extentions.setupSnackBar
+import com.ijikod.apptasker.util.Extentions.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_add_task.*
 import javax.inject.Inject
 
 /**
@@ -21,9 +28,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AddTaskFragment : Fragment(R.layout.fragment_add_task) {
 
-    private lateinit var viewDataBinding: FragmentAddTaskBinding
-
     private val viewModel by viewModels<AddTaskViewModel> ()
+
+    private val args : AddTaskFragmentArgs by navArgs()
 
 
     override fun onCreateView(
@@ -31,10 +38,21 @@ class AddTaskFragment : Fragment(R.layout.fragment_add_task) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view  = inflater.inflate(R.layout.fragment_add_task, container, false)
+        val binding = FragmentAddTaskBinding.bind(view).apply {
+            vm = viewModel
+        }
 
         setHasOptionsMenu(true)
+        binding.lifecycleOwner = this.viewLifecycleOwner
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         setUpObservers()
-        return super.onCreateView(inflater, container, savedInstanceState)
+        viewModel.load(args.taskId)
     }
 
 
@@ -55,6 +73,12 @@ class AddTaskFragment : Fragment(R.layout.fragment_add_task) {
             }
 
         })
+
+        setUpSnackBar()
+    }
+
+    private fun setUpSnackBar(){
+        view?.setupSnackBar(viewLifecycleOwner, viewModel.errorMsg, Snackbar.LENGTH_SHORT)
     }
 
 
@@ -62,11 +86,15 @@ class AddTaskFragment : Fragment(R.layout.fragment_add_task) {
         Toast.makeText(this.context, msg, Toast.LENGTH_LONG).show()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.save_task_menu, menu)
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_task -> viewModel.saveTask()
         }
-        return super.onOptionsItemSelected(item)
+        return true
     }
 }

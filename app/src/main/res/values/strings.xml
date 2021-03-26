@@ -13,4 +13,6 @@
     <string name="task_saved_txt">Task Saved</string>
     <string name="oops_error_txt">Oops error happened while saving task</string>
     <string name="empty_task_txt">Nothing to see here, click + to add task</string>
+    <string name="new_task_txt">New Task</string>
+    <string name="empty_fields_txt">Enter Task Data</string>
 </resources>

@@ -4,22 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/taskListFragment">
-
     <fragment
         android:id="@+id/taskListFragment"
         android:name="com.ijikod.apptasker.presentation.fragments.TaskListFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_task_list">
+        android:label="Tasks">
         <action
-            android:id="@+id/action_mainFragment_to_addTaskFragment"
+            android:id="@+id/action_taskListFragment_to_addTaskFragment"
             app:destination="@id/addTaskFragment" />
-        <argument
-            android:name="taskId"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/addTaskFragment"
         android:name="com.ijikod.apptasker.presentation.fragments.AddTaskFragment"
-        android:label="@string/add_task"
-        tools:layout="@layout/fragment_add_task" />
+        android:label="Task">
+        <argument
+            android:name="taskId"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
 </navigation>

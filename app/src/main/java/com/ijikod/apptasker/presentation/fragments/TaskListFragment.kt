@@ -1,9 +1,7 @@
 package com.ijikod.apptasker.presentation.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -40,6 +38,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             vm = viewModel
         }
 
+        setUpFab()
         return binding.root
     }
 
@@ -49,12 +48,13 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         // Set the lifecycle owner to the lifecycle of the view
         binding.lifecycleOwner = this.viewLifecycleOwner
         setUpListAdapter()
-        setUpNavigation()
-        setUpFab()
+//        setUpNavigation()
+
     }
 
+
     private fun setUpFab(){
-        fab.setOnClickListener {
+        binding.fab.setOnClickListener {
             navigateToNewTask()
         }
     }
@@ -73,13 +73,13 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
 
     private fun navigateToNewTask(){
-        findNavController().navigate(TaskListFragmentDirections.actionMainFragmentToAddTaskFragment())
+        val action = TaskListFragmentDirections.actionTaskListFragmentToAddTaskFragment(null)
+        findNavController().navigate(action)
     }
 
     private fun openTaskDetail(taskId: String){
-        val action = TaskListFragmentDirections.actionMainFragmentToAddTaskFragment()
-        val bundle = Bundle()
-        bundle.putString("task_id", taskId)
+        val action = TaskListFragmentDirections.actionTaskListFragmentToAddTaskFragment(taskId)
+        findNavController().navigate(action)
     }
 
 
