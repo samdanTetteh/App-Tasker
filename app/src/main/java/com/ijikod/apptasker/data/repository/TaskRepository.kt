@@ -1,5 +1,6 @@
 package com.ijikod.apptasker.data.repository
 
+import androidx.lifecycle.LiveData
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +12,9 @@ import kotlinx.coroutines.flow.Flow
  */
 interface TaskRepository {
 
-    suspend fun getTasks(): Result<Any>
+    fun observeTasks(): LiveData<Result<List<Task>>>
+
+    suspend fun getTasks(): Result<List<Task>>
 
     suspend fun getTask(taskId: String): Result<Task>
 

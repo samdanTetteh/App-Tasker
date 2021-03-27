@@ -1,11 +1,14 @@
 package com.ijikod.apptasker.data.source
 
+import androidx.lifecycle.LiveData
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
 import kotlinx.coroutines.flow.Flow
 
 
 interface TaskDataSource {
+
+    fun observeTasks(): LiveData<Result<List<Task>>>
 
     suspend fun getTasks(): Result<List<Task>>
 

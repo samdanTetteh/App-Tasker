@@ -7,7 +7,6 @@ import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
 import com.ijikod.apptasker.data.repository.TasksRepository
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * ViewModel to task list Screen
@@ -17,7 +16,18 @@ class TasksViewModel @ViewModelInject constructor (
     private val tasksRepository: TasksRepository
 ): ViewModel() {
 
-    private val _taskItems = MutableLiveData<List<Task>>().apply { value = emptyList() }
+    private val _loadTasks = MutableLiveData(false)
+
+    private val _taskItems : LiveData<List<Task>> = Transformations.switchMap(_loadTasks) { loadTasks ->
+        if (loadTasks){
+            _dataLoading.value = true
+            viewModelScope.launch {
+                tasksRepository.getTasks()
+                _dataLoading.value = false
+            }
+        }
+        Transformations.distinctUntilChanged(tasksRepository.observeTasks()).switchMap { loadData(it) }
+    }
     val tasks: LiveData<List<Task>> = _taskItems
 
     private val _dataLoading = MutableLiveData<Boolean>()
@@ -40,28 +50,22 @@ class TasksViewModel @ViewModelInject constructor (
 
 
     init {
-        loadData()
+        _loadTasks.value = true
     }
 
 
+    private fun loadData(taskResult: Result<List<Task>>) : LiveData<List<Task>> {
 
-    private fun loadData(){
-        _dataLoading.value = true
+        val result = MutableLiveData<List<Task>>()
 
-        viewModelScope.launch {
-            val tasksResult = tasksRepository.getTasks()
-
-            if (tasksResult is Result.Success){
-                val tasks = tasksResult.data
-                _taskItems.value = tasks
-
+            if (taskResult is Result.Success){
+                result.value = taskResult.data
             }else {
-                _taskItems.value = emptyList()
+                result.value = emptyList()
                 _errorMsg.value = R.string.task_loading_error
             }
 
-            _dataLoading.value = false
-        }
+        return result
     }
 
     fun newTask(){

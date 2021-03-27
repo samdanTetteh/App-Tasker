@@ -1,5 +1,6 @@
 package com.ijikod.apptasker.data.source.persistance
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.ijikod.apptasker.data.models.Task
 import kotlinx.coroutines.flow.Flow
@@ -13,8 +14,22 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Dao
 interface TaskDao {
 
+    /**
+     * Observes list of tasks
+     *
+     * @return all tasks
+     * **/
+    @Query("SELECT * FROM Tasks")
+    fun observeTasks(): LiveData<List<Task>>
+
+
+    /**
+     * Select
+     * **/
     @Query("SELECT * FROM Tasks")
     suspend fun getTasks(): List<Task>
+
+
 
     @Query("SELECT * FROM TASKS WHERE id = :taskId")
     suspend fun getTask(taskId: String): Task

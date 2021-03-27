@@ -1,5 +1,6 @@
 package com.ijikod.apptasker.data.repository
 
+import androidx.lifecycle.LiveData
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
 import com.ijikod.apptasker.data.source.TaskDataSource
@@ -30,8 +31,10 @@ class TasksRepository @Inject constructor(
 
             return@withContext Result.Error(Exception("Illegal state"))
         }
+    }
 
-
+    override fun observeTasks(): LiveData<Result<List<Task>>> {
+        return localDataSource.observeTasks()
     }
 
     override suspend fun getTask(taskId: String): Result<Task> {

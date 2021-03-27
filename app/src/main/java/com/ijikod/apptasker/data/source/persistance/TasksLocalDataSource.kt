@@ -1,5 +1,7 @@
 package com.ijikod.apptasker.data.source.persistance
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
 import com.ijikod.apptasker.data.source.TaskDataSource
@@ -14,6 +16,12 @@ class TasksLocalDataSource(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : TaskDataSource {
 
+
+    override fun observeTasks(): LiveData<Result<List<Task>>> {
+        return Transformations.map(dao.observeTasks()) {
+            Result.Success(it)
+        }
+    }
 
     override suspend fun getTasks(): Result<List<Task>> = withContext(ioDispatcher){
        return@withContext try {

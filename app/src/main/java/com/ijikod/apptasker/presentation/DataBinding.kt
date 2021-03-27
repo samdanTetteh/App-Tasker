@@ -9,6 +9,9 @@ import com.ijikod.apptasker.domain.vm.AddTaskViewModel
 
 
 @BindingAdapter("items")
-fun setItems(listView: RecyclerView, items: List<Task>) {
-    (listView.adapter as TaskAdapter).submitList(items)
+fun setItems(listView: RecyclerView, items: List<Task>?) {
+    items?.let {
+        (listView.adapter as TaskAdapter).submitList(items)
+    }
+
 }
