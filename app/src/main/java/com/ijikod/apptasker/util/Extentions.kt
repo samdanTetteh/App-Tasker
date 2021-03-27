@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
+import com.ijikod.apptasker.Event
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,11 +18,13 @@ object Extentions {
 
     fun View.setupSnackBar(
         lifecycleOwner: LifecycleOwner,
-        snackBarEvent: LiveData<Int>,
+        snackBarEvent: LiveData<Event<Int>>,
         timeLength: Int
     ) {
-        snackBarEvent.observe(lifecycleOwner, {
-            showSnackBar(context.getString(it), timeLength)
+        snackBarEvent.observe(lifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let {
+                showSnackBar(context.getString(it), timeLength)
+            }
         })
     }
 

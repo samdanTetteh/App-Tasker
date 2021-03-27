@@ -7,14 +7,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.ijikod.apptasker.EventObserver
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.databinding.FragmentTaskListBinding
 import com.ijikod.apptasker.domain.vm.TasksViewModel
 import com.ijikod.apptasker.presentation.ItemTouchCallback
 import com.ijikod.apptasker.presentation.TaskAdapter
+import com.ijikod.apptasker.util.Extentions.setupSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_task_list.*
 
@@ -25,6 +28,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
     private val viewModel by viewModels<TasksViewModel>()
 
+    private val args: TaskListFragmentArgs by navArgs()
+
     lateinit var binding: FragmentTaskListBinding
 
     lateinit var listAdapter: TaskAdapter
@@ -34,7 +39,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTaskListBinding.inflate(inflater, container, false).apply {
             vm = viewModel
         }
@@ -50,7 +55,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         binding.lifecycleOwner = this.viewLifecycleOwner
         setUpListAdapter()
         setUpNavigation()
-
+        setupSnackBar()
     }
 
 
@@ -69,6 +74,16 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         viewModel.addTaskData.observe(viewLifecycleOwner, EventObserver {
             openTaskDetail(it)
         })
+    }
+
+
+    private fun setupSnackBar(){
+        view?.setupSnackBar(viewLifecycleOwner, viewModel.snackBarMsg, Snackbar.LENGTH_LONG)
+        arguments?.let {
+            if (args.notification != 0){
+                viewModel.showSnackBarMsg(args.notification)
+            }
+        }
     }
 
 

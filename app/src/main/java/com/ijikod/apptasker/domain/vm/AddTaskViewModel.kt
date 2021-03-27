@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ijikod.apptasker.Event
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
@@ -24,8 +25,8 @@ class AddTaskViewModel @ViewModelInject constructor(
 
     val taskDescriptionErrors = addTaskUseCase.taskDescriptionErrorObservable
 
-    private val _errorMsg = MutableLiveData<Int>()
-    val errorMsg: LiveData<Int> = _errorMsg
+    private val _errorMsg = MutableLiveData<Event<Int>>()
+    val errorMsg: LiveData<Event<Int>> = _errorMsg
 
     private val _taskUpdated = MutableLiveData<Boolean>()
     val taskUpdated = _taskUpdated
@@ -73,7 +74,7 @@ class AddTaskViewModel @ViewModelInject constructor(
         val currentDesc = description.value
 
         if (currentTitle.isNullOrEmpty() || currentDesc.isNullOrEmpty()) {
-            _errorMsg.value = R.string.empty_fields_txt
+            _errorMsg.value = Event(R.string.empty_fields_txt)
             return
         }
 

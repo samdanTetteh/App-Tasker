@@ -61,12 +61,13 @@ class AddTaskFragment : Fragment(R.layout.fragment_add_task) {
 
             when (result) {
                 is Result.Success -> {
-                    showToast(getString(R.string.task_saved_txt))
-                    findNavController().navigateUp()
+                    val action  = AddTaskFragmentDirections.actionAddTaskFragmentToTaskListFragment(R.string.task_saved_txt)
+                    findNavController().navigate(action)
                 }
 
                 is Result.Error -> {
-                    showToast(getString(R.string.oops_error_txt))
+                    val action  = AddTaskFragmentDirections.actionAddTaskFragmentToTaskListFragment(R.string.oops_error_txt)
+                    findNavController().navigate(action)
                 }
 
                 else -> {}
@@ -79,11 +80,6 @@ class AddTaskFragment : Fragment(R.layout.fragment_add_task) {
 
     private fun setUpSnackBar(){
         view?.setupSnackBar(viewLifecycleOwner, viewModel.errorMsg, Snackbar.LENGTH_SHORT)
-    }
-
-
-    private fun showToast(msg: String){
-        Toast.makeText(this.context, msg, Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

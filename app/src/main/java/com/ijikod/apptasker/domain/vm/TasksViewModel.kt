@@ -31,22 +31,26 @@ class TasksViewModel @ViewModelInject constructor (
     }
     val tasks: LiveData<List<Task>> = _taskItems
 
+    val empty = Transformations.map(_taskItems) {
+        it.isEmpty()
+    }
+
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
     private val _errorMsg = MutableLiveData<Int>()
     val errorMsg: LiveData<Int> = _errorMsg
 
-    val empty = Transformations.map(_taskItems) {
-        it.isEmpty()
-    }
-
+    private val _snackBarMsg = MutableLiveData<Event<Int>>()
+    val snackBarMsg = _snackBarMsg
 
     private val _newTaskEvent = MutableLiveData<Event<Unit>>()
     val newTaskEvent: LiveData<Event<Unit>> = _newTaskEvent
 
     private val _addTaskEvent = MutableLiveData<Event<String>>()
     val addTaskData: LiveData<Event<String>> = _addTaskEvent
+
+    private var msgShown: Boolean = false
 
 
 
@@ -76,6 +80,12 @@ class TasksViewModel @ViewModelInject constructor (
 
     fun addTask(taskId: String){
         _addTaskEvent.value = Event(taskId)
+    }
+
+    fun showSnackBarMsg(msg: Int) {
+        if (msgShown) return
+        _snackBarMsg.value = Event(msg)
+        msgShown = true
     }
 
     fun deleteTask(taskId: String) {
