@@ -2,6 +2,7 @@ package com.ijikod.apptasker.domain.vm
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.ijikod.apptasker.Event
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.data.Result
 import com.ijikod.apptasker.data.models.Task
@@ -41,11 +42,11 @@ class TasksViewModel @ViewModelInject constructor (
     }
 
 
-    private val _newTaskEvent = MutableLiveData<Unit>()
-    val newTaskEvent: LiveData<Unit> = _newTaskEvent
+    private val _newTaskEvent = MutableLiveData<Event<Unit>>()
+    val newTaskEvent: LiveData<Event<Unit>> = _newTaskEvent
 
-    private val _addTaskEvent = MutableLiveData<String>()
-    val addTaskData: LiveData<String> = _addTaskEvent
+    private val _addTaskEvent = MutableLiveData<Event<String>>()
+    val addTaskData: LiveData<Event<String>> = _addTaskEvent
 
 
 
@@ -69,12 +70,12 @@ class TasksViewModel @ViewModelInject constructor (
     }
 
     fun newTask(){
-        _newTaskEvent.value = Unit
+        _newTaskEvent.value = Event(Unit)
     }
 
 
     fun addTask(taskId: String){
-        _addTaskEvent.value = taskId
+        _addTaskEvent.value = Event(taskId)
     }
 
     fun deleteTask(taskId: String) {

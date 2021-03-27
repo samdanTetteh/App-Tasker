@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.ijikod.apptasker.EventObserver
 import com.ijikod.apptasker.R
 import com.ijikod.apptasker.databinding.FragmentTaskListBinding
 import com.ijikod.apptasker.domain.vm.TasksViewModel
@@ -48,7 +49,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         // Set the lifecycle owner to the lifecycle of the view
         binding.lifecycleOwner = this.viewLifecycleOwner
         setUpListAdapter()
-//        setUpNavigation()
+        setUpNavigation()
 
     }
 
@@ -61,11 +62,11 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
 
     private fun setUpNavigation() {
-        viewModel.newTaskEvent.observe(viewLifecycleOwner, Observer {
+        viewModel.newTaskEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToNewTask()
         })
 
-        viewModel.addTaskData.observe(viewLifecycleOwner, Observer {
+        viewModel.addTaskData.observe(viewLifecycleOwner, EventObserver {
             openTaskDetail(it)
         })
     }
