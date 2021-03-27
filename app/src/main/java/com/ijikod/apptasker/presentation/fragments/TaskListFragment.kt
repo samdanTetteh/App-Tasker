@@ -90,8 +90,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             val swipeToDeleteCallback = object : ItemTouchCallback() {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val pos = viewHolder.adapterPosition
-                    listAdapter.currentList.removeAt(pos)
-                    viewModel.deleteTask(listAdapter.currentList.get(pos).id)
+                    viewModel.deleteTask(listAdapter.currentList[pos].id)
                     listAdapter.notifyItemRemoved(pos)
                 }
             }
